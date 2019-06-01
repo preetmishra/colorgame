@@ -1,2 +1,2 @@
 # colorgame
-A simple color game.
+A simple color game written in JavaScript.
