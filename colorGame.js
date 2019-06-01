@@ -1,6 +1,7 @@
 var numSqrs = 6;
 var colors = [];
 var correctColor;
+var score = 0;
 var modeName;
 var squares = document.querySelectorAll('.square');
 var h1 = document.querySelector('h1');
@@ -44,21 +45,25 @@ function setupSquares() {
         squares[i].addEventListener("click", function () {
             clickedColor = this.style.backgroundColor;
             if (clickedColor === correctColor) {
-                messageDisplay.textContent = "Correct.";
+                if(resetButton.textContent !== "Play Again?")
+                    score += 5;
+                messageDisplay.textContent = score;
                 h1.style.background = clickedColor;
                 resetButton.textContent = "Play Again?"
                 changeColors(clickedColor);
             } else {
                 this.style.backgroundColor = "#232323";
-                messageDisplay.textContent = "Incorrect.";
+                score += -1;
+                messageDisplay.textContent = score;
             }
         })
     }
 }
 
 function reset() {
-    resetButton.textContent = "New Colors"
-    messageDisplay.textContent = "";
+    resetButton.textContent = "New board";
+    // score = 0;
+    messageDisplay.textContent = score;
     if (modeName === "Beast") {
         colors = beastModeColors();
         correctColor = pickColor();
