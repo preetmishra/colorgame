@@ -9,6 +9,7 @@ var displayColor = document.querySelector('#correctColor');
 var messageDisplay = document.querySelector("#status");
 var resetButton = document.querySelector("#reset");
 var modeButtons = document.querySelectorAll(".mode");
+var resetScoreButton = document.querySelector("#resetscore");
 
 
 init();
@@ -62,7 +63,6 @@ function setupSquares() {
 
 function reset() {
     resetButton.textContent = "New board";
-    // score = 0;
     messageDisplay.textContent = score;
     if (modeName === "Beast") {
         colors = beastModeColors();
@@ -85,6 +85,10 @@ function reset() {
 
 resetButton.addEventListener("click", reset);
 
+resetScoreButton.addEventListener("click", function(){
+    score = 0;
+    messageDisplay.textContent = score;
+});
 function beastModeColors() {
     var red = Math.floor(Math.random() * 256);
     var green = Math.floor(Math.random() * 256);
