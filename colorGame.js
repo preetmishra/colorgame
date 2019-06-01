@@ -1,6 +1,7 @@
 var numSqrs = 6;
 var colors = [];
 var correctColor;
+var modeName;
 var squares = document.querySelectorAll('.square');
 var h1 = document.querySelector('h1');
 var displayColor = document.querySelector('#correctColor');
@@ -11,23 +12,25 @@ var modeButtons = document.querySelectorAll(".mode");
 
 init();
 
-function init()
-{
+function init() {
     setupModeButtons();
     setupSquares();
     reset();
 
 }
 
-function setupModeButtons()
-{
+function setupModeButtons() {
     for (var i = 0; i < modeButtons.length; i++) {
         modeButtons[i].addEventListener("click", function () {
             modeButtons[0].classList.remove('selected');
             modeButtons[1].classList.remove('selected');
+            modeButtons[2].classList.remove('selected');
             this.classList.add("selected");
-            if (this.textContent === "Easy")
+            modeName = this.textContent;
+            if (modeName === "Easy")
                 numSqrs = 3;
+            else if (modeName === "Hard")
+                numSqrs = 6;
             else
                 numSqrs = 6;
             reset();
@@ -35,8 +38,7 @@ function setupModeButtons()
     }
 }
 
-function setupSquares()
-{
+function setupSquares() {
     for (var i = 0; i < squares.length; i++) {
         // click listeners to squares
         squares[i].addEventListener("click", function () {
@@ -54,20 +56,22 @@ function setupSquares()
     }
 }
 
-function reset()
-{
+function reset() {
     resetButton.textContent = "New Colors"
     messageDisplay.textContent = "";
-    colors = genRandomColor(numSqrs);
-    correctColor = pickColor();
+    if (modeName === "Beast") {
+        colors = beastModeColors();
+        correctColor = pickColor();
+    } else {
+        colors = genRandomColor(numSqrs);
+        correctColor = pickColor();
+    }
     displayColor.textContent = correctColor;
     for (var i = 0; i < squares.length; i++) {
-        if(colors[i])
-        {
+        if (colors[i]) {
             squares[i].style.display = "block";
             squares[i].style.backgroundColor = colors[i];
-        }
-        else
+        } else
             squares[i].style.display = "none";
     }
     h1.style.background = "steelblue";
@@ -76,26 +80,41 @@ function reset()
 
 resetButton.addEventListener("click", reset);
 
+function beastModeColors() {
+    var red = Math.floor(Math.random() * 256);
+    var green = Math.floor(Math.random() * 256);
+    var blue = Math.floor(Math.random() * 256);
+    var redOne = red > 30 ? red - 30 : red + 30;
+    var greenOne = green > 30 ? green - 30 : green + 30;
+    var blueOne = blue > 30 ? blue - 30 : blue + 30;
+    var arr = [
+        'rgb(' + red + ', ' + green + ', ' + blue + ')',
+        'rgb(' + red + ', ' + greenOne + ', ' + blue + ')',
+        'rgb(' + red + ', ' + green + ', ' + blueOne + ')',
+        'rgb(' + redOne + ', ' + green + ', ' + blueOne + ')',
+        'rgb(' + redOne + ', ' + greenOne + ', ' + blue + ')',
+        'rgb(' + redOne + ', ' + greenOne + ', ' + blueOne + ')',
+    ];
+    return arr;
+
+}
 
 function pickColor() {
     var randomInd = Math.floor(Math.random() * colors.length);
     return colors[randomInd];
 }
 
-function changeColors(color)
-{
-    for(var i = 0; i < squares.length; i++)
-    {
+function changeColors(color) {
+    for (var i = 0; i < squares.length; i++) {
         squares[i].style.backgroundColor = color;
     }
 }
 
-function genRandomColor(num)
-{
+function genRandomColor(num) {
     var arr = [];
-    for(var i = 0; i < num; i++)
+    for (var i = 0; i < num; i++)
         arr.push(randomcolorgetter());
-    return arr;    
+    return arr;
 }
 
 function randomcolorgetter() {
